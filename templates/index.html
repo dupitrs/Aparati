@@ -1,19 +1,28 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Login/Register</title>
+</head>
 <body>
-    <div class="App">
-        <header class="App-header">
-            <img src="{{ url_for('static', filename='Octocat.png') }}" class="App-logo" alt="logo" />
-            <p>
-                GitHub Codespaces <span class="heart">♥️</span> Flask
-            </p>
-            <p class="small">
-                Edit <code>templates/index.html</code> and refresh to see your changes!
-            </p>
-        </header>
-    </div>
-</body>
+    <div class="container">
+        <h1>Login or Register</h1>
+        <form id="authForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
 
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="button" onclick="authenticate()">Login</button>
+            <button type="button" onclick="register()">Register</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
 </html>
