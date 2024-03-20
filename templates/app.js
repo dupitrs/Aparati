@@ -1,4 +1,3 @@
-// static/app.js
 
 function authenticate() {
     var username = document.getElementById('username').value;
@@ -15,7 +14,6 @@ function authenticate() {
     .then(data => {
         if (data.success) {
             alert('Login successful!');
-            // Redirect or perform other actions after successful login
         } else {
             alert('Login failed. Please check your credentials.');
         }
@@ -37,7 +35,6 @@ function register() {
     .then(data => {
         if (data.success) {
             alert('Registration successful!');
-            // Redirect or perform other actions after successful registration
         } else {
             alert('Registration failed. Please try a different username.');
         }

@@ -1,28 +1,33 @@
-<!-- templates/index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>Login/Register</title>
+    <title>Registration and Login</title>
+    <style>
+        body {
+            background-color: #7a7070; 
+            font-family: Arial, sans-serif; 
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Login or Register</h1>
-        <form id="authForm">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+    <h1>Registration</h1>
+    <form id="registerForm" action="/register" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <button type="submit">Register</button>
+    </form>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-
-            <button type="button" onclick="authenticate()">Login</button>
-            <button type="button" onclick="register()">Register</button>
-        </form>
-    </div>
-
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <h1>Login</h1>
+    <form id="loginForm" action="/login" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>
