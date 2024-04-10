@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
+from flask import Flask, render_template, request, jsonify, flash, redirect, url_for
+
 import csv
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Change to your actual secret key
 
 @app.route("/")
 def home():
@@ -26,18 +28,28 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form['username']
-        password = request.form['password']
-        
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
+
+        # Open the CSV and use DictReader to read rows into a dictionary
         with open('users.csv', mode='r') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                # Here we use the keys directly
-                if row['username'] == username and row['password'] == password:
-                    return redirect(url_for('main_page'))
-            flash('Wrong username or password')
-            return redirect(url_for('login'))
+                # Compare the form input with the CSV content
+                if row['username'].strip() == username and row['password'].strip() == password:
+                    # If a match is found, return success message
+                    return jsonify({'success': True, 'message': 'Login successful'})
+            # If no match is found after checking all rows, print message
+            print("No matching credentials found.")
+            return jsonify({'success': False, 'message': 'Login failed. Please check your username and password.'})
+
+    # If it's a GET request or the else part of POST, show the login form
     return render_template('login.html')
+
+
+
+
+
 
 
 @app.route("/main_page")
