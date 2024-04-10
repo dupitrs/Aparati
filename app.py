@@ -1,35 +1,48 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 import csv
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
+@app.route("/")
+def home():
     return render_template('index.html')
 
-@app.route('/register', methods=['POST'])
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    
-    with open('users.csv', mode='a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([username, password])
-    
-    return jsonify({'message': 'User registered successfully!'})
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+        # You might want to add validation and hashing of the password here
 
-@app.route('/login', methods=['POST'])
+        # Write to CSV
+        with open('users.csv', 'a', newline='') as csvfile:
+            userwriter = csv.writer(csvfile, delimiter=',')
+            userwriter.writerow([username, password])
+
+        return redirect(url_for('home'))  # Redirect to the home page after registration
+    else:
+        return render_template('register.html')  # Show the registration form
+    
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+        
+        with open('users.csv', mode='r') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                # Here we use the keys directly
+                if row['username'] == username and row['password'] == password:
+                    return redirect(url_for('main_page'))
+            flash('Wrong username or password')
+            return redirect(url_for('login'))
+    return render_template('login.html')
 
-    with open('users.csv', mode='r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            if row[0] == username and row[1] == password:
-                return jsonify({'message': 'Login successful!'})
-    
-    return jsonify({'message': 'Invalid credentials!'})
 
-if __name__ == '__main__':
+@app.route("/main_page")
+def main_page():
+    return render_template('main.html')  # Render the main page template
+
+if __name__ == "__main__":
     app.run(debug=True)
