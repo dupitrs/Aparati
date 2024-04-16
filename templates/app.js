@@ -17,7 +17,7 @@ function sendRequest(endpoint, usernameId, passwordId) {
     .then(data => {
         if (data.success) {
             alert('Operation successful!');
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 1000);
         } else {
             alert('Operation failed. Please check your credentials.');
         }
@@ -32,3 +32,4 @@ function login() {
 function register() {
     sendRequest('/register', 'register_username', 'register_password');
 }
+
