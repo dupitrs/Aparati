@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, jsonify, flash, redirect, url_for
-
 import csv
+import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Change to your actual secret key
+app.secret_key = 'bam'  
 
 @app.route("/")
 def home():
@@ -14,16 +14,20 @@ def register():
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
-        # You might want to add validation and hashing of the password here
+        
+        # Check if file is empty and write headers
+        if os.stat('users.csv').st_size == 0:
+            with open('users.csv', 'a', newline='') as csvfile:
+                userwriter = csv.writer(csvfile, delimiter=',')
+                userwriter.writerow(['username', 'password'])
 
-        # Write to CSV
         with open('users.csv', 'a', newline='') as csvfile:
             userwriter = csv.writer(csvfile, delimiter=',')
             userwriter.writerow([username, password])
 
-        return redirect(url_for('home'))  # Redirect to the home page after registration
+        return redirect(url_for('home'))  
     else:
-        return render_template('register.html')  # Show the registration form
+        return render_template('register.html')  
     
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -31,26 +35,16 @@ def login():
         username = request.form['username'].strip()
         password = request.form['password'].strip()
 
-        # Open the CSV and use DictReader to read rows into a dictionary
         with open('users.csv', mode='r') as csvfile:
-            reader = csv.DictReader(csvfile)
+            reader = csv.reader(csvfile)
             for row in reader:
-                # Compare the form input with the CSV content
-                if row['username'].strip() == username and row['password'].strip() == password:
-                    # If a match is found, return success message
-                    return jsonify({'success': True, 'message': 'Login successful'})
-            # If no match is found after checking all rows, print message
+                if row[0].strip() == username and row[1].strip() == password:
+                    return redirect(url_for('main_page'))  # Redirect to main page after successful login
+
             print("No matching credentials found.")
             return jsonify({'success': False, 'message': 'Login failed. Please check your username and password.'})
 
-    # If it's a GET request or the else part of POST, show the login form
     return render_template('login.html')
-
-
-
-
-
-
 
 @app.route("/main_page")
 def main_page():
