@@ -1,0 +1,49 @@
+.navbar {
+    background: linear-gradient(to right, #111010e3, #333333e3);
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    margin-left: 0;
+    padding-left: 0;
+    box-shadow: 0px 15px 30px rgba(255, 180, 67, 0.863); 
+}
+
+.navbar img {
+    float: right;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+body {
+    background-image: url('/static/homepp.jpg');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+}
+
+.web {
+    float: left;
+    width: 150px;
+    height: 50px;
+    margin: 10px;
+    width: 100%;
+}
+
+#website-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 50px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
