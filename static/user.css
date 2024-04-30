@@ -1,8 +1,19 @@
-body {
-    font-family: Arial, sans-serif;
+body::after {
+    content: "";
+    background: url('/static/UBG.jpg');
+    background-size: cover;
+    position: fixed; /* Stretch the pseudo-element to cover the whole page */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1; /* Place it behind the content */
+    backdrop-filter: blur(5px); /* Apply the blur */
+}
+
+html, body {
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
 }
 
 .container {
@@ -12,11 +23,29 @@ body {
 }
 
 header {
-    background: #50b3a2;
+    background: #300000;
     color: white;
     padding-top: 30px;
     min-height: 70px;
-    border-bottom: #e8491d 3px solid;
+    border-bottom: #e8de1d 3px solid;
+    margin-top: 50px;  /* Add this line to lower the header */
+    margin-left: auto;  /* Add this line to center the header */
+    margin-right: auto;  /* Add this line to center the header */
+    width: 80%;  /* Add this line to set the width of the header */
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.container-below {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    background-color: #979c7b;  /* Add a background color for testing */
+    height: 200px;  /* Add a height for testing */
 }
 
 header a {
@@ -54,3 +83,13 @@ header a:hover {
     color: #cccccc;
     font-weight: bold;
 }
+.logout-link {
+    color: red;
+}
+
+.logout-link:hover {
+    color: darkred;
+}
+
+
+

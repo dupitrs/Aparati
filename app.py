@@ -1,9 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from flask_session import Session
 import csv
 import os
 
+
 app = Flask(__name__)
 app.secret_key = 'slepena'  # Replace with your own secret key
+
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 @app.route("/")
 def home():
@@ -15,16 +20,20 @@ def register():
         username = request.form['username']
         password = request.form['password']
         
+        # Check if username is alphanumeric
+        if not username.isalnum():
+            return "Username must contain only letters and numbers"
+        
         # Check if file is empty and write headers
         if os.stat('users.csv').st_size == 0:
             with open('users.csv', 'a', newline='') as csvfile:
                 userwriter = csv.writer(csvfile, delimiter=',')
-                userwriter.writerow(['username', 'password'])
+                userwriter.writerow(['username', 'password', 'balance'])  # Add 'balance' to the headers
         
         # Write the new user's data to the file
         with open('users.csv', 'a', newline='') as csvfile:
             userwriter = csv.writer(csvfile, delimiter=',')
-            userwriter.writerow([username, password])
+            userwriter.writerow([username, password, 1500])  # Set the initial balance to 1500
         
         return redirect(url_for('login'))  # Redirect to login after registration
     else:
@@ -41,22 +50,42 @@ def login():
             userreader = csv.reader(csvfile, delimiter=',')
             for row in userreader:
                 if row[0] == username and row[1] == password:
+                    session['username'] = username  # Store the username in session
+                    print("Username stored in session:", session['username'])  # Print the stored username
                     return redirect(url_for('main_page'))  # Redirect to main_page if login is successful
             return "Invalid credentials"  # Return an error message if login is unsuccessful
     else:
         return render_template('login.html')  # Render the login form
 
+@app.route("/user", methods=["GET"])
+def user_profile():
+    username = session.get('username')  # Get the username from session
+    if username:  # If a username is found in the session
+        # Fetch the user's balance
+        with open('users.csv', 'r') as csvfile:
+            userreader = csv.reader(csvfile, delimiter=',')
+            for row in userreader:
+                if row[0] == username:
+                    balance = row[2]  # The balance is in the third column
+                    break
+            else:
+                return redirect(url_for('login'))  # If no matching username is found, redirect to the login page
+        return render_template('user.html', username=username, balance=balance)  # Pass the username and balance to the template
+    else:
+        return redirect(url_for('login'))  # If no username is found, redirect to the login page
+    
 @app.route("/main_page")
 def main_page():
     return render_template('home.html')
 
-@app.route("/user", methods=["GET"])
-def user_profile():
-    return render_template('user.html')
+@app.route("/logout")
+def logout():
+    session.clear()  # Clear the session
+    return redirect(url_for('login'))  # Redirect to the login page
 
-@app.route('/api/username', methods=['GET'])
-def get_username():
-    return jsonify(username='Guest')
+@app.route("/index")
+def index():
+    return render_template('home.html')  # Render the home page
 
 if __name__ == "__main__":
     app.run(debug=True)

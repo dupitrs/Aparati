@@ -6,30 +6,33 @@
     <link rel="stylesheet" href="/static/user.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div id="branding">
-                <h1>Account</h1>
+    <div class="outline">  <!-- Remove the closing div tag here -->
+        <header>
+            <div class="container">
+                <div id="branding">
+                    <h1>Profile</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="/index">Home</a></li>
+                        <li><a href="/logout" class="logout-link">Log Out</a></li>
+                    </ul>
+                </nav>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="/index">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li class="current"><a href="/user">Profile</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+        </header>
 
-    <section id="main">
-        <div class="container">
-            <article id="main-col">
-                <h1 class="page-title">Welcome, {{ username }}!</h1>
-                <p>
-                    This is your profile page. You can view and edit your profile information here.
-                </p>
-            </article>
-        </div>
-    </section>
+        <section id="main">
+            <div class="container-below">
+                <article id="main-col">
+                    <h1 class="page-title">Welcome, {{ username }}!</h1>
+                    <p>Your balance is: {{ balance }}</p>
+                    <p>
+                        This is your profile page. You can view and edit your profile information here.
+                    </p>
+
+                </article>
+            </div>
+        </section>
+    </div>  <!-- The closing div tag for the "outline" class should be here -->
 </body>
 </html>
