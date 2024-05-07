@@ -58,11 +58,12 @@ header a {
 header li {
     float: left;
     display: inline;
-    padding: 0 20px 0 20px;
+    padding: 0 20px 0 25px;
 }
 
 header #branding {
     float: left;
+    
 }
 
 header #branding h1 {
@@ -91,5 +92,13 @@ header a:hover {
     color: darkred;
 }
 
+#branding h1 {
+    font-size: 30px;  /* Change the font size */
+    color: rgb(204, 187, 187);  /* Change the color */
+ }
+
+ #main-col {
+    margin-left: 30px;  /* Add 20px of margin to the left */
+}
 
 

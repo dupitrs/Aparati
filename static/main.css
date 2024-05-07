@@ -80,3 +80,10 @@ html, body {
 a {
     color: #6c5cfc; 
 }
+
+#icon {
+    width: 360px; /* adjust as needed */
+    height: auto; /* maintain aspect ratio */
+    display: block; /* to allow margins to be applied */
+    margin: 0 auto; /* center the image */
+}

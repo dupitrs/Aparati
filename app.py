@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
+from datetime import timedelta
 import csv
 import os
 
 
 app = Flask(__name__)
 app.secret_key = 'slepena'  # Replace with your own secret key
-
+app.permanent_session_lifetime = timedelta(minutes=60)  # set session lifetime to 60 minutes
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
@@ -87,5 +88,37 @@ def logout():
 def index():
     return render_template('home.html')  # Render the home page
 
+@app.route("/user")
+def user():
+    return render_template('user.html')  # Render the user page
+
+@app.route("/aparats")
+def aparats():
+    return render_template('aparats.html')  # Render the aparats page
+
+@app.route('/deposit', methods=['POST'])
+def deposit():
+    amount = 100  # fixed deposit amount
+    username = session['username']  # get username from session
+    update_balance(username, amount)
+    return redirect(url_for('user'))  # redirect to user after deposit
+
+def update_balance(username, amount):
+    # read the CSV
+    with open('users.csv', 'r') as f:
+        users = list(csv.reader(f))
+
+    # find the user and update their balance
+    for user in users:
+        if user[0] == username:
+            user[2] = str(int(user[2]) + amount)
+            break
+
+    # write the updated data back to the CSV
+    with open('users.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(users)
+        
 if __name__ == "__main__":
     app.run(debug=True)
+    
