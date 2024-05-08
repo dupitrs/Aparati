@@ -48,3 +48,18 @@ body {
     box-sizing: border-box;
 }
 
+#slot-icon {
+    width: 500px; /* adjust as needed to make the image bigger */
+    height: auto; /* maintain aspect ratio */
+    position: absolute;
+    left: 60%; /* move the image to the right */
+    top: 70%; /* move the image down */
+    transform: translate(-50%, -50%); /* offset the left and top positioning */
+    z-index: 9999; /* make it the topmost element */
+    transition: all 0.3s ease; /* animate changes */
+}
+
+#slot-icon:hover {
+    width: 550px; /* make the image bigger when hovered */
+    border: 5px solid yellow; /* add a yellow outline when hovered */
+}

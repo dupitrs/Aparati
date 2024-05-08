@@ -30,8 +30,13 @@
         <form id="registerForm" action="/register" method="post">
             <label for="register_username">Username:</label>
             <input type="text" id="register_username" name="username" required><br>
-            <label for="register_password">Password:</label>
+            <label for="register_password">Password:</label>       
             <input type="password" id="register_password" name="password" required><br>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <p class="error">{{ messages[0] }}</p>
+            {% endif %}
+            {% endwith %}
             <button type="submit">Register</button>
         </form>
     </div>
